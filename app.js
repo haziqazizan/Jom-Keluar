@@ -1,5 +1,6 @@
 import {
   MOODS, DATES, noLabel, jomScale, dodgePosition, canContinue, buildPayload,
+  stampText, moodNames, recap,
 } from "./logic.js";
 
 // Web3Forms access key. It is a public key by design: it can only deliver
@@ -37,6 +38,8 @@ function show(step) {
     dot.classList.toggle("is-current", i === at);
   }
   noBtn.hidden = step !== "ask";
+  if (step === "dates") $("#ticket-mood").textContent = moodNames(state).join(", ");
+  if (step === "done") arrangeBouquet();
   window.scrollTo(0, 0);
   const heading = $(`[data-step="${step}"] h2`);
   if (heading) heading.focus({ preventScroll: true });
@@ -46,6 +49,32 @@ function refreshNext() {
   for (const step of ["mood", "dates"]) {
     $(`[data-step="${step}"] [data-next]`).disabled = !canContinue(step, state);
   }
+  refreshStamp();
+}
+
+// the rubber stamp lands on the ticket once she has picked a day
+function refreshStamp() {
+  const text = stampText(state);
+  const stamp = $("#stamp");
+  const key = text ? `${text.big}|${text.small}` : "";
+  if (stamp.dataset.key === key) return;
+  stamp.dataset.key = key;
+  stamp.hidden = true;
+  if (!text) return;
+  $("#stamp-top").textContent = text.top;
+  $("#stamp-big").textContent = text.big;
+  $("#stamp-small").textContent = text.small;
+  stamp.offsetWidth; // restart the stamping animation
+  stamp.hidden = false;
+}
+
+// the thank-you shows the vase exactly as she filled it
+function arrangeBouquet() {
+  const copy = $("#vase").cloneNode(true);
+  copy.removeAttribute("id");
+  copy.setAttribute("aria-label", "the bouquet you arranged");
+  $("#bouquet").replaceChildren(copy);
+  $("#recap").textContent = recap(state);
 }
 
 for (const btn of document.querySelectorAll("[data-next]")) {
@@ -154,18 +183,45 @@ function toggleChip(chip, set, id) {
   refreshNext();
 }
 
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+function putInVase(id, on) {
+  $(`#vase [data-flower="${id}"]`).classList.toggle("is-in", on);
+  $(`#vase [data-ghost="${id}"]`).classList.toggle("is-filled", on);
+}
+
 const moodsEl = $("#moods");
 for (const mood of MOODS) {
-  const [emoji, ...name] = mood.label.split(" ");
   const chip = document.createElement("button");
   chip.type = "button";
   chip.className = "chip";
   chip.dataset.mood = mood.id;
   chip.setAttribute("aria-pressed", "false");
-  chip.innerHTML = `<span class="mood-emoji" aria-hidden="true"></span><span class="mood-name"></span>`;
-  chip.children[0].textContent = emoji;
-  chip.children[1].textContent = name.join(" ");
-  chip.addEventListener("click", () => toggleChip(chip, state.moods, mood.id));
+
+  const icon = document.createElementNS(SVG_NS, "svg");
+  icon.setAttribute("class", "mood-flower");
+  icon.setAttribute("viewBox", "0 0 40 40");
+  icon.setAttribute("aria-hidden", "true");
+  const use = document.createElementNS(SVG_NS, "use");
+  use.setAttribute("href", `#${mood.flower}`);
+  use.setAttribute("width", "40");
+  use.setAttribute("height", "40");
+  icon.appendChild(use);
+
+  const words = document.createElement("span");
+  const name = document.createElement("span");
+  name.className = "mood-name";
+  name.textContent = mood.name;
+  const what = document.createElement("span");
+  what.className = "mood-what";
+  what.textContent = mood.flowerName;
+  words.append(name, what);
+
+  chip.append(icon, words);
+  chip.addEventListener("click", () => {
+    toggleChip(chip, state.moods, mood.id);
+    putInVase(mood.id, state.moods.has(mood.id));
+  });
   moodsEl.appendChild(chip);
 }
 

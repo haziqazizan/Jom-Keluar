@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   NO_LABELS, MOODS, DATES,
-  noLabel, jomScale, dodgePosition, canContinue, buildPayload,
+  noLabel, jomScale, dodgePosition, canContinue, buildPayload, stampText, recap,
 } from "../logic.js";
 
 const emptyState = () => ({
@@ -50,10 +50,62 @@ test("the offered dates are the eight weekend days Haziq is free", () => {
   assert.equal(DATES[7].label, "sun 27 dec");
 });
 
-test("the moods are coffee, art gallery, museum and dinner", () => {
+test("the moods are coffee, brunch, art gallery, museum, lunch and dinner", () => {
   assert.deepEqual(MOODS.map((m) => m.label), [
-    "☕ coffee", "🎨 art gallery", "🏛 museum", "🍽 dinner",
+    "☕ coffee", "🥞 brunch", "🎨 art gallery", "🏛 museum", "🥗 lunch", "🍽 dinner",
   ]);
+  assert.deepEqual(MOODS.map((m) => m.name), [
+    "coffee", "brunch", "art gallery", "museum", "lunch", "dinner",
+  ]);
+});
+
+test("every mood has its own flower for the bouquet", () => {
+  const flowers = MOODS.map((m) => m.flower);
+  assert.equal(new Set(flowers).size, 6);
+  for (const m of MOODS) assert.ok(m.flowerName.startsWith("a "), m.flowerName);
+});
+
+test("the ticket has no stamp until she picks a day", () => {
+  assert.equal(stampText(emptyState()), null);
+  const s = emptyState();
+  s.ownDate = true;
+  assert.equal(stampText(s), null);
+});
+
+test("one picked day is stamped with that date", () => {
+  const s = emptyState();
+  s.dates.add("2026-12-06");
+  assert.deepEqual(stampText(s), { top: "confirmed", big: "6 DEC", small: "sunday" });
+  const t = emptyState();
+  t.dates.add("2026-11-28");
+  assert.deepEqual(stampText(t), { top: "confirmed", big: "28 NOV", small: "saturday" });
+});
+
+test("several picked days are stamped with how many", () => {
+  const s = emptyState();
+  s.dates.add("2026-12-06");
+  s.dates.add("2026-12-19");
+  s.ownDate = true;
+  s.ownDateText = "lepas new year";
+  assert.deepEqual(stampText(s), { top: "confirmed", big: "3 DAYS", small: "to choose from" });
+});
+
+test("only her own date is stamped as her pick", () => {
+  const s = emptyState();
+  s.ownDate = true;
+  s.ownDateValue = "2027-01-09";
+  assert.deepEqual(stampText(s), { top: "confirmed", big: "MY PICK", small: "noted" });
+});
+
+test("the thank-you recaps what she chose", () => {
+  const s = emptyState();
+  s.moods.add("gallery");
+  s.moods.add("coffee");
+  s.dates.add("2026-12-06");
+  assert.equal(recap(s), "coffee · art gallery · sun 6 dec");
+  s.ownDate = true;
+  s.ownDateText = " petang ";
+  assert.equal(recap(s), "coffee · art gallery · sun 6 dec · petang");
 });
 
 test("a dodge always lands on screen and never on top of jommmm", () => {

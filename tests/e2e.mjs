@@ -153,12 +153,20 @@ await check("jommmm leads to the mood step, which needs one pick", async () => {
   assert.equal(await visibleStep(page), "mood");
   assert.ok((await page.innerText('[data-step="mood"]')).includes("yayy! jadi what are you in the mood for ?"));
   assert.equal(await page.isVisible("#no"), false, "no should be gone after the ask");
-  assert.equal(await page.locator("button[data-mood]").count(), 4);
+  assert.equal(await page.locator("button[data-mood]").count(), 6);
+  const moodText = await page.innerText("#moods");
+  for (const name of ["coffee", "brunch", "art gallery", "museum", "lunch", "dinner"]) {
+    assert.ok(moodText.includes(name), `missing mood ${name}`);
+  }
+  const inVase = (id) => page.evaluate((f) => document.querySelector(`#vase [data-flower="${f}"]`).classList.contains("is-in"), id);
+  assert.equal(await inVase("museum"), false, "vase starts without her flowers");
   assert.equal(await page.isDisabled('[data-step="mood"] [data-next]'), true);
   await page.click('button[data-mood="museum"]');
   assert.equal(await page.getAttribute('button[data-mood="museum"]', "aria-pressed"), "true");
   assert.equal(await page.isDisabled('[data-step="mood"] [data-next]'), false);
+  assert.equal(await inVase("museum"), true, "picking a mood adds its flower");
   await page.click('button[data-mood="museum"]');
+  assert.equal(await inVase("museum"), false, "unpicking takes the flower out");
   assert.equal(await page.isDisabled('[data-step="mood"] [data-next]'), true);
   await close();
 });
@@ -174,6 +182,13 @@ await check("dates step offers eight dates and her own date", async () => {
   assert.ok((await page.innerText("#own-date-toggle")).includes("none of these, but i choose the date"));
   assert.equal(await page.isVisible("#own-date"), false);
   assert.equal(await page.isDisabled('[data-step="dates"] [data-next]'), true);
+  assert.equal((await page.innerText("#ticket-mood")).trim(), "dinner");
+  assert.equal(await page.isVisible("#stamp"), false, "no stamp before a day is picked");
+  await page.click('button[data-date="2026-12-06"]');
+  assert.equal(await page.isVisible("#stamp"), true);
+  assert.ok((await page.innerText("#stamp")).includes("6 DEC"));
+  await page.click('button[data-date="2026-12-06"]');
+  assert.equal(await page.isVisible("#stamp"), false);
 
   await page.click("#own-date-toggle");
   assert.equal(await page.isVisible("#own-date"), true);
@@ -230,6 +245,10 @@ await check("send goes out once with her picks and lands on the thank-you", asyn
   assert.equal(body.note, "hehe okay");
   assert.ok((await page.innerText('[data-step="done"]')).includes("okieee. rest easy, i akan settlekan semua 🌷"));
   assert.equal(await page.getAttribute("a#ig", "href"), "https://instagram.com/zimekq");
+  const bouquet = await page.evaluate(() =>
+    [...document.querySelectorAll("#bouquet [data-flower].is-in")].map((g) => g.dataset.flower).sort().join(","));
+  assert.equal(bouquet, "coffee,gallery", "the bouquet holds exactly the flowers she picked");
+  assert.equal((await page.innerText("#recap")).trim(), "coffee · art gallery · sun 6 dec");
   await close();
 });
 
@@ -249,6 +268,8 @@ await check("no step scrolls sideways on a small phone", async () => {
   assert.equal(await wide(), false, "mood");
   await page.click('button[data-mood="dinner"]');
   await page.click('[data-step="mood"] [data-next]');
+  await page.click('button[data-date="2026-12-06"]');
+  assert.equal(await wide(), false, "dates while the stamp lands");
   await page.click("#own-date-toggle");
   assert.equal(await wide(), false, "dates");
   await close();

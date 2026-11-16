@@ -8,11 +8,14 @@ export const NO_LABELS = [
   "okay okay… jommmm je la",
 ];
 
+// Each mood is a flower: her picks become the bouquet on the thank-you screen.
 export const MOODS = [
-  { id: "coffee", label: "☕ coffee" },
-  { id: "gallery", label: "🎨 art gallery" },
-  { id: "museum", label: "🏛 museum" },
-  { id: "dinner", label: "🍽 dinner" },
+  { id: "coffee", label: "☕ coffee", name: "coffee", flower: "daisy", flowerName: "a daisy" },
+  { id: "brunch", label: "🥞 brunch", name: "brunch", flower: "tulip", flowerName: "a tulip" },
+  { id: "gallery", label: "🎨 art gallery", name: "art gallery", flower: "poppy", flowerName: "a poppy" },
+  { id: "museum", label: "🏛 museum", name: "museum", flower: "lily", flowerName: "a lily" },
+  { id: "lunch", label: "🥗 lunch", name: "lunch", flower: "lavender", flowerName: "a lavender sprig" },
+  { id: "dinner", label: "🍽 dinner", name: "dinner", flower: "strawberry", flowerName: "a strawberry" },
 ];
 
 export const DATES = [
@@ -85,4 +88,32 @@ export function buildPayload(state, accessKey) {
     her_own_date: ownDateParts(state).join(", ") || "-",
     note: state.note.trim().slice(0, NOTE_LIMIT) || "-",
   };
+}
+
+const WEEKDAYS = { sat: "saturday", sun: "sunday" };
+
+// The rubber stamp on the ticket: null until she has picked a day.
+export function stampText(state) {
+  const own = ownDateParts(state).length > 0 ? 1 : 0;
+  const count = state.dates.size + own;
+  if (count === 0) return null;
+  if (count === 1 && own) return { top: "confirmed", big: "MY PICK", small: "noted" };
+  if (count === 1) {
+    const [dow, day, mon] = DATES.find((d) => state.dates.has(d.id)).label.split(" ");
+    return { top: "confirmed", big: `${day} ${mon.toUpperCase()}`, small: WEEKDAYS[dow] ?? dow };
+  }
+  return { top: "confirmed", big: `${count} DAYS`, small: "to choose from" };
+}
+
+export function moodNames(state) {
+  return MOODS.filter((m) => state.moods.has(m.id)).map((m) => m.name);
+}
+
+// One line under the finished bouquet.
+export function recap(state) {
+  return [
+    ...moodNames(state),
+    ...DATES.filter((d) => state.dates.has(d.id)).map((d) => d.label),
+    ...ownDateParts(state),
+  ].join(" · ");
 }

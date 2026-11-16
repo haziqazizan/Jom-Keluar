@@ -66,18 +66,24 @@ Buttons: `no` and `jommmm`.
 - `jommmm` goes to step 2.
 
 **2. Mood**: heading "yayy! jadi what are you in the mood for ?"
-Multi-select chips: ☕ coffee, 🎨 art gallery, 🏛 museum, 🍽 dinner.
-At least one needed to continue.
+Multi-select chips: coffee, brunch, art gallery, museum, lunch, dinner
+(list set by Haziq). Each mood is a flower (daisy, tulip, poppy, lily, lavender
+sprig, strawberry) and each pick adds that flower to a drawn vase above the
+chips. At least one needed to continue.
 
 **3. Dates**: heading "bila free?"
 Multi-select chips, all 2026: Sat 28 Nov, Sun 29 Nov, Sat 5 Dec, Sun 6 Dec,
 Sat 19 Dec, Sun 20 Dec, Sat 26 Dec, Sun 27 Dec.
+Shown as the stub of a boarding pass: from DM, to ???, passenger hanna,
+destination a surprise, in the mood for her picks. A rubber stamp lands on the
+ticket once she picks a day.
 Plus "none of these, but i choose the date", which reveals a date picker and
 a short free-text box. At least one date or her own date needed to continue.
 
 **4. Note**: heading "anything you want to tell me?" Optional text box. `send` button.
 
-**5. Done**: "okieee. rest easy, i akan settlekan semua 🌷" and a button to
+**5. Done**: the vase exactly as she filled it, tagged "arranged by hanna ✿",
+a one-line recap of her picks, "okieee. rest easy, i akan settlekan semua 🌷" and a button to
 `https://instagram.com/zimekq`.
 
 ## Sending
