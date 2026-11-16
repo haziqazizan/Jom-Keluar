@@ -90,9 +90,33 @@ design and lives in the page; Haziq creates it at web3forms.com with his email.
 
 ## Look
 
-Cream and blush base, muted sage and rose accents, floral details drawn in
-SVG or CSS, a handwritten-style heading font paired with a quiet readable body
-font. Phone first, fine on desktop. Respects reduced-motion settings (the No
+Haziq's firm requirement: layout and design match Hanna's Instagram and vibe.
+The page should read like one of her own posts or a page from her travel
+scrapbook. Drawn from her feed:
+
+- **Palette:** warm cream and linen as the base (her backgrounds are almost
+  all off-white fabric, paper and walls), blush pink, soft sage green, and a
+  small amount of strawberry and poppy red as the one strong accent. Warm
+  wood brown for text instead of black. Nothing neon, no gradients, no dark mode.
+- **Texture:** paper or linen grain on the background, like her quote post
+  printed on textured paper.
+- **Type:** a classic serif for the message (her quote post, "Every time you
+  draw, cook, write, or arrange flowers", is set in one), a loose handwritten
+  script for headings and small asides (her photo captions are white
+  handwriting), all lowercase where the copy allows.
+- **Motifs:** hand-drawn style flowers such as daisies, lilies, tulips and
+  poppies; vintage batik and floral-print pattern as borders or chip
+  backgrounds; a postage-stamp frame with perforated edge (she uses one on a
+  travel post); washi tape, a photobooth-strip or polaroid frame, strawberries.
+  All drawn in SVG or CSS, no photographs.
+- **Layout:** one centred card per step, like a single Instagram post or a
+  scrapbook page, generous empty space, slightly tilted taped-on elements,
+  nothing dense. Chips look like little stamps or paper tags. A row of small
+  dots or story-highlight style circles shows which step she is on.
+- **Motion:** slow and soft, such as petals drifting and cards easing in.
+  The No button is the only fast, silly thing on the page.
+
+Phone first, fine on desktop. Respects reduced-motion settings (the No
 button still dodges, without the animated glide).
 
 ## Left to the builder
