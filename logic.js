@@ -16,6 +16,9 @@ export const MOODS = [
   { id: "museum", label: "🏛 museum", name: "museum", flower: "lily", flowerName: "a lily" },
   { id: "lunch", label: "🥗 lunch", name: "lunch", flower: "lavender", flowerName: "a lavender sprig" },
   { id: "dinner", label: "🍽 dinner", name: "dinner", flower: "strawberry", flowerName: "a strawberry" },
+  // "whole" means every flower at once: she leaves the day to Haziq.
+  { id: "fullday", label: "💐 full day (you plan the rest)", name: "full day", flower: "bouquet",
+    flowerName: "a whole bouquet, i plan the rest", whole: true },
 ];
 
 export const DATES = [

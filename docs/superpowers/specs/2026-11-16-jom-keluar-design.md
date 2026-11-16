@@ -69,7 +69,8 @@ Buttons: `no` and `jommmm`.
 Multi-select chips: coffee, brunch, art gallery, museum, lunch, dinner
 (list set by Haziq). Each mood is a flower (daisy, tulip, poppy, lily, lavender
 sprig, strawberry) and each pick adds that flower to a drawn vase above the
-chips. At least one needed to continue.
+chips. A seventh, wider chip, "full day", means she leaves the whole day to
+Haziq; it fills the vase with every flower. At least one needed to continue.
 
 **3. Dates**: heading "bila free?"
 Multi-select chips, all 2026: Sat 28 Nov, Sun 29 Nov, Sat 5 Dec, Sun 6 Dec,

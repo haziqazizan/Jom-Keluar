@@ -309,6 +309,9 @@ input:focus-visible, textarea:focus-visible {
 .dates .chip[aria-pressed="true"] { transform: rotate(-3deg) translateY(-2px); }
 
 .moods .chip { display: flex; align-items: center; gap: 8px; padding: 8px 10px; text-align: left; border-radius: 8px; }
+.moods .chip-whole { grid-column: 1 / -1; border-color: var(--sage); }
+.moods .chip-whole[aria-pressed="true"] { background: #e9eee1; border-color: var(--sage-deep); transform: rotate(-.8deg); }
+.chip-whole .mood-flower { width: 46px; height: 46px; }
 .mood-flower { width: 38px; height: 38px; flex: none; transition: opacity .3s; }
 .moods .chip[aria-pressed="false"] .mood-flower { opacity: .5; }
 .mood-name  { display: block; font-size: 20px; font-style: italic; font-weight: 500; line-height: 1.05; }
@@ -394,7 +397,7 @@ input[type="date"] { min-height: 46px; }
 .hint.center { margin-bottom: 4px; }
 
 /* ---- the vase ---- */
-.vasebox { position: relative; height: min(330px, 38dvh); margin: 0 auto 10px; }
+.vasebox { position: relative; height: min(300px, 34dvh); margin: 0 auto 10px; }
 .vasebox svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .flower {
   opacity: 0;

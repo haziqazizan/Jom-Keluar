@@ -153,9 +153,9 @@ await check("jommmm leads to the mood step, which needs one pick", async () => {
   assert.equal(await visibleStep(page), "mood");
   assert.ok((await page.innerText('[data-step="mood"]')).includes("yayy! jadi what are you in the mood for ?"));
   assert.equal(await page.isVisible("#no"), false, "no should be gone after the ask");
-  assert.equal(await page.locator("button[data-mood]").count(), 6);
+  assert.equal(await page.locator("button[data-mood]").count(), 7);
   const moodText = await page.innerText("#moods");
-  for (const name of ["coffee", "brunch", "art gallery", "museum", "lunch", "dinner"]) {
+  for (const name of ["coffee", "brunch", "art gallery", "museum", "lunch", "dinner", "full day"]) {
     assert.ok(moodText.includes(name), `missing mood ${name}`);
   }
   const inVase = (id) => page.evaluate((f) => document.querySelector(`#vase [data-flower="${f}"]`).classList.contains("is-in"), id);
@@ -167,6 +167,13 @@ await check("jommmm leads to the mood step, which needs one pick", async () => {
   assert.equal(await inVase("museum"), true, "picking a mood adds its flower");
   await page.click('button[data-mood="museum"]');
   assert.equal(await inVase("museum"), false, "unpicking takes the flower out");
+  await page.click('button[data-mood="fullday"]');
+  for (const id of ["coffee", "brunch", "gallery", "museum", "lunch", "dinner"]) {
+    assert.equal(await inVase(id), true, `full day should put ${id}'s flower in`);
+  }
+  assert.equal(await page.isDisabled('[data-step="mood"] [data-next]'), false);
+  await page.click('button[data-mood="fullday"]');
+  assert.equal(await inVase("coffee"), false, "taking full day back empties the vase");
   assert.equal(await page.isDisabled('[data-step="mood"] [data-next]'), true);
   await close();
 });

@@ -185,16 +185,22 @@ function toggleChip(chip, set, id) {
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
-function putInVase(id, on) {
-  $(`#vase [data-flower="${id}"]`).classList.toggle("is-in", on);
-  $(`#vase [data-ghost="${id}"]`).classList.toggle("is-filled", on);
+// a flower is in the vase if she picked it, or if she picked the full day
+function refreshVase() {
+  const everything = MOODS.some((m) => m.whole && state.moods.has(m.id));
+  for (const mood of MOODS) {
+    if (mood.whole) continue;
+    const on = everything || state.moods.has(mood.id);
+    $(`#vase [data-flower="${mood.id}"]`).classList.toggle("is-in", on);
+    $(`#vase [data-ghost="${mood.id}"]`).classList.toggle("is-filled", on);
+  }
 }
 
 const moodsEl = $("#moods");
 for (const mood of MOODS) {
   const chip = document.createElement("button");
   chip.type = "button";
-  chip.className = "chip";
+  chip.className = mood.whole ? "chip chip-whole" : "chip";
   chip.dataset.mood = mood.id;
   chip.setAttribute("aria-pressed", "false");
 
@@ -220,7 +226,7 @@ for (const mood of MOODS) {
   chip.append(icon, words);
   chip.addEventListener("click", () => {
     toggleChip(chip, state.moods, mood.id);
-    putInVase(mood.id, state.moods.has(mood.id));
+    refreshVase();
   });
   moodsEl.appendChild(chip);
 }

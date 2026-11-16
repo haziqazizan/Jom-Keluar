@@ -50,18 +50,32 @@ test("the offered dates are the eight weekend days Haziq is free", () => {
   assert.equal(DATES[7].label, "sun 27 dec");
 });
 
-test("the moods are coffee, brunch, art gallery, museum, lunch and dinner", () => {
+test("the moods are the six outings plus a full day", () => {
   assert.deepEqual(MOODS.map((m) => m.label), [
     "☕ coffee", "🥞 brunch", "🎨 art gallery", "🏛 museum", "🥗 lunch", "🍽 dinner",
+    "💐 full day (you plan the rest)",
   ]);
   assert.deepEqual(MOODS.map((m) => m.name), [
-    "coffee", "brunch", "art gallery", "museum", "lunch", "dinner",
+    "coffee", "brunch", "art gallery", "museum", "lunch", "dinner", "full day",
   ]);
+});
+
+test("only full day stands for the whole bouquet", () => {
+  assert.deepEqual(MOODS.filter((m) => m.whole).map((m) => m.id), ["fullday"]);
+});
+
+test("full day alone is enough to continue and reaches the email", () => {
+  const s = emptyState();
+  s.moods.add("fullday");
+  s.dates.add("2026-12-06");
+  assert.equal(canContinue("mood", s), true);
+  assert.equal(buildPayload(s, "K").mood, "💐 full day (you plan the rest)");
+  assert.equal(recap(s), "full day · sun 6 dec");
 });
 
 test("every mood has its own flower for the bouquet", () => {
   const flowers = MOODS.map((m) => m.flower);
-  assert.equal(new Set(flowers).size, 6);
+  assert.equal(new Set(flowers).size, 7);
   for (const m of MOODS) assert.ok(m.flowerName.startsWith("a "), m.flowerName);
 });
 
