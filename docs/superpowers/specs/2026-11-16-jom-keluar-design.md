@@ -73,7 +73,7 @@ chips. A seventh, wider chip, "full day", means she leaves the whole day to
 Haziq; it fills the vase with every flower. At least one needed to continue.
 
 **3. Dates**: heading "bila free?"
-Multi-select chips, all 2026: Sat 28 Nov, Sun 29 Nov, Sat 5 Dec, Sun 6 Dec,
+Multi-select chips, all 2026: Sat 21 Nov, Sun 22 Nov, Sat 28 Nov, Sun 29 Nov, Sat 5 Dec, Sun 6 Dec,
 Sat 19 Dec, Sun 20 Dec, Sat 26 Dec, Sun 27 Dec.
 Shown as the stub of a boarding pass: from DM, to ???, passenger hanna,
 destination a surprise, in the mood for her picks. A rubber stamp lands on the

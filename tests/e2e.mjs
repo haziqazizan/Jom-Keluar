@@ -185,7 +185,7 @@ await check("dates step offers eight dates and her own date", async () => {
   await page.click('[data-step="mood"] [data-next]');
   assert.equal(await visibleStep(page), "dates");
   assert.ok((await page.innerText('[data-step="dates"]')).includes("bila free?"));
-  assert.equal(await page.locator("button[data-date]").count(), 8);
+  assert.equal(await page.locator("button[data-date]").count(), 10);
   assert.ok((await page.innerText("#own-date-toggle")).includes("none of these, but i choose the date"));
   assert.equal(await page.isVisible("#own-date"), false);
   assert.equal(await page.isDisabled('[data-step="dates"] [data-next]'), true);

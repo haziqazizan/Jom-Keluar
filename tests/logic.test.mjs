@@ -41,13 +41,14 @@ test("jommmm grows with each dodge and stops at 1.6", () => {
   assert.equal(jomScale(100), 1.6);
 });
 
-test("the offered dates are the eight weekend days Haziq is free", () => {
+test("the offered dates are the ten weekend days Haziq is free", () => {
   assert.deepEqual(DATES.map((d) => d.id), [
-    "2026-11-28", "2026-11-29", "2026-12-05", "2026-12-06",
+    "2026-11-21", "2026-11-22", "2026-11-28", "2026-11-29", "2026-12-05", "2026-12-06",
     "2026-12-19", "2026-12-20", "2026-12-26", "2026-12-27",
   ]);
-  assert.equal(DATES[0].label, "sat 28 nov");
-  assert.equal(DATES[7].label, "sun 27 dec");
+  assert.equal(DATES[0].label, "sat 21 nov");
+  assert.equal(DATES[1].label, "sun 22 nov");
+  assert.equal(DATES[9].label, "sun 27 dec");
 });
 
 test("the moods are the six outings plus a full day", () => {

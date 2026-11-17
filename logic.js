@@ -22,6 +22,8 @@ export const MOODS = [
 ];
 
 export const DATES = [
+  { id: "2026-11-21", label: "sat 21 nov" },
+  { id: "2026-11-22", label: "sun 22 nov" },
   { id: "2026-11-28", label: "sat 28 nov" },
   { id: "2026-11-29", label: "sun 29 nov" },
   { id: "2026-12-05", label: "sat 5 dec" },
